@@ -42,8 +42,8 @@ In addition to building the models, you are also required to analyze the followi
 - Presence of a single interaction term
 
 ### Linear Regression Results
-========================= Linear Regression Model =========================
-Number of rows before filtering: 1000
+========================= Linear Regression Model =========================\
+Number of rows before filtering: 1000\
 Number of rows after filtering: 987
 
 | Number of Features | Features                      | Average RMSE | Average R2    |

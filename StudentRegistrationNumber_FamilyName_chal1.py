@@ -243,7 +243,7 @@ class KNNModel(LinearRegressionModel):
 
 
 if __name__ == '__main__':
-    # Usage
+    # drop_columns = ['v1', 'v3', 'v5', 'v7']
     drop_columns = None
     print('========================= Linear Regression Model =========================')
     lr = LinearRegressionModel('train_ch.csv', 
@@ -255,9 +255,21 @@ if __name__ == '__main__':
                             high_leverage_points=False)
     best_n_features = lr.search_best_number_of_features(max_features=9)
     lr.train(n_features=best_n_features)
-    # predicts = lr.test('test_ch.csv')
-    # print(predicts)
-    # print('========================= KNN Model =========================')
-    # knn = KNNModel('train_ch.csv', feature_selection=True)
-    # best_n_features = knn.search_best_number_of_features(max_features=9)
-    # knn.train(n_features=best_n_features)
+    lr_predicts = lr.test('test_ch.csv')
+    
+    print('========================= KNN Model =========================')
+    knn = KNNModel('train_ch.csv', 
+                    feature_selection=True, 
+                    scaler=None,
+                    drop_columns=drop_columns,
+                    outlier_filter=True,
+                    collinear_features=False,
+                    high_leverage_points=True,
+                    n_neighbors=4)
+    best_n_features = knn.search_best_number_of_features(max_features=9)
+    knn.train(n_features=best_n_features)
+    knn_predicts = knn.test('test_ch.csv')
+    
+    ## Write predictions to results file 
+    results = pd.DataFrame({'LR': lr_predicts, 'KNN': knn_predicts})
+    results.to_csv('results.csv', index=False)
