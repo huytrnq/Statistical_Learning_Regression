@@ -40,4 +40,21 @@ In addition to building the models, you are also required to analyze the followi
 - Presence of outliers and/or high-leverage points
 - Collinearity/multicollinearity of predictors
 - Presence of a single interaction term
-# Statistical_Learning_Regression
+
+### Linear Regression Results
+========================= Linear Regression Model =========================
+Number of rows before filtering: 1000
+Number of rows after filtering: 987
+
+| Number of Features | Features                      | Average RMSE | Average R2    |
+|--------------------|-------------------------------|--------------|---------------|
+| 1                  | ['v3']                        | 14.9405      | 0.99596       |
+| 2                  | ['v3', 'v9']                  | 14.9402      | 0.99596       |
+| 3                  | ['v3', 'v7', 'v9']            | 14.9123      | 0.99598       |
+| 4                  | ['v3', 'v5', 'v7', 'v9']      | 14.9281      | 0.99597       |
+| 5                  | ['v1', 'v3', 'v5', 'v7', 'v9']| 14.9567      | 0.99595       |
+| 6                  | ['v1', 'v3', 'v4', 'v5', 'v7', 'v9'] | 14.9562 | 0.99595 |
+| 7                  | ['v1', 'v3', 'v4', 'v5', 'v7', 'v8', 'v9'] | 14.9777 | 0.99594 |
+| 8                  | ['v1', 'v2', 'v3', 'v4', 'v5', 'v7', 'v8', 'v9'] | 14.9897 | 0.99594 |
+| 9                  | ['v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9'] | 14.9923 | 0.99593 |
+
