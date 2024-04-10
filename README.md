@@ -58,3 +58,26 @@ Number of rows after filtering: 987
 | 8                  | ['v1', 'v2', 'v3', 'v4', 'v5', 'v7', 'v8', 'v9'] | 14.9897 | 0.99594 |
 | 9                  | ['v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9'] | 14.9923 | 0.99593 |
 
+### KNN Results
+========================= KNN Model =========================\
+Number of rows before filtering: 1000\
+Number of removed high leverage points: 0\
+Number of rows after filtering: 987
+
+| Number of Features | Features                           | Average RMSE | Average R2    |
+|--------------------|------------------------------------|--------------|---------------|
+| 1                  | ['v3']                             | 1.5312       | 0.99996       |
+| 2                  | ['v3', 'v9']                       | 5.7213       | 0.99941       |
+| 3                  | ['v3', 'v7', 'v9']                 | 16.1172      | 0.99528       |
+| 4                  | ['v3', 'v5', 'v7', 'v9']           | 16.0896      | 0.99530       |
+| 5                  | ['v1', 'v3', 'v5', 'v7', 'v9']     | 16.1046      | 0.99529       |
+| 6                  | ['v1', 'v3', 'v4', 'v5', 'v7', 'v9'] | 16.1268    | 0.99528       |
+| 7                  | ['v1', 'v3', 'v4', 'v5', 'v7', 'v8', 'v9'] | 16.1268 | 0.99528       |
+| 8                  | ['v1', 'v2', 'v3', 'v4', 'v5', 'v7', 'v8', 'v9'] | 16.1397 | 0.99526 |
+| 9                  | ['v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9'] | 16.1407 | 0.99526 |
+
+Best number of features: 1, RMSE: 1.5312
+Training with 1 features ['v3']
+Training completed. Average RMSE: 1.5312, Average R2: 0.99996
+
+
