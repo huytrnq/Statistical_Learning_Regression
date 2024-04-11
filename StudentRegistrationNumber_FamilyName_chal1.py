@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsRegressor
+from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import root_mean_squared_error, r2_score
 from sklearn.model_selection import KFold
 from sklearn.feature_selection import SelectKBest, f_regression
@@ -16,6 +17,7 @@ class LinearRegressionModel:
     def __init__(self, file_path, feature_selection=False, 
                 scaler=None,
                 drop_columns=None,
+                kfolds=5,
                 outlier_filter=True,
                 collinear_features=True,
                 high_leverage_points=True):
@@ -24,6 +26,7 @@ class LinearRegressionModel:
         self.feature_selection = feature_selection
         self.selector = None
         self.scaler = scaler if scaler else None
+        self.kfolds = kfolds
         self.outlier_filter = outlier_filter
         self.collinear_features = collinear_features
         self.high_leverage_points = high_leverage_points
@@ -161,7 +164,7 @@ class LinearRegressionModel:
         r2_scores = []
         features = self.X if not self.feature_selection else self.X_transformed
         print(f'Training with {features.shape[1]} features', selected_features)
-        kf = KFold(n_splits=5, shuffle=True, random_state=42)
+        kf = KFold(n_splits=self.kfolds, shuffle=True, random_state=42)
         rmse_scores = []
         r2_scores = []
         for train_index, test_index in kf.split(features):
@@ -171,6 +174,8 @@ class LinearRegressionModel:
             predictions = self.model.predict(X_test)
             rmse_scores.append(root_mean_squared_error(y_test, predictions))
             r2_scores.append(r2_score(y_test, predictions))
+        ## Uncomment the below line to plot the predictions against the actual values
+        # self.plot_predictions(X_test, y_test, predictions)
         avg_rmse = sum(rmse_scores) / len(rmse_scores)
         avg_r2 = sum(r2_scores) / len(r2_scores)
         print(f'Training completed. Average RMSE: {avg_rmse}, Average R2: {avg_r2}')
@@ -228,6 +233,7 @@ class KNNModel(LinearRegressionModel):
                 feature_selection=False, 
                 scaler=None,
                 drop_columns=None,
+                kfolds=5,
                 outlier_filter=True,
                 collinear_features=True,
                 high_leverage_points=True,
@@ -236,20 +242,24 @@ class KNNModel(LinearRegressionModel):
                         feature_selection=feature_selection, 
                         scaler=scaler,
                         drop_columns=drop_columns,
+                        kfolds=kfolds,
                         outlier_filter=outlier_filter,
                         collinear_features=collinear_features,
                         high_leverage_points=high_leverage_points)
         self.model = KNeighborsRegressor(n_neighbors=n_neighbors)
+        
 
 
 if __name__ == '__main__':
-    # drop_columns = ['v1', 'v3', 'v5', 'v7']
+    # drop_columns = ['v1', 'v3', 'v5', 'v7'] 
     drop_columns = None
+    lr_kfolds=5
     print('========================= Linear Regression Model =========================')
     lr = LinearRegressionModel('train_ch.csv', 
                             feature_selection=True, 
-                            scaler=StandardScaler(),
+                            scaler=StandardScaler(), #StandardScaler() produces better results than MinMaxScaler()
                             drop_columns=drop_columns,
+                            kfolds=lr_kfolds,
                             outlier_filter=True,
                             collinear_features=False,
                             high_leverage_points=False)
@@ -257,11 +267,13 @@ if __name__ == '__main__':
     lr.train(n_features=best_n_features)
     lr_predicts = lr.test('test_ch.csv')
     
+    kfolds=10
     print('========================= KNN Model =========================')
     knn = KNNModel('train_ch.csv', 
                     feature_selection=True, 
-                    scaler=None,
+                    scaler=None, # There is no difference in the results with or without scaling
                     drop_columns=drop_columns,
+                    kfolds=kfolds,
                     outlier_filter=True,
                     collinear_features=False,
                     high_leverage_points=True,
@@ -270,6 +282,6 @@ if __name__ == '__main__':
     knn.train(n_features=best_n_features)
     knn_predicts = knn.test('test_ch.csv')
     
-    ## Write predictions to results file 
+    # Write predictions to results file 
     results = pd.DataFrame({'LR': lr_predicts, 'KNN': knn_predicts})
-    results.to_csv('results.csv', index=False)
+    results.to_csv('StudentRegistrationNumber_FamilyName_chal1.csv', index=False, header=False)
